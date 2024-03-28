@@ -12,10 +12,14 @@ MAILER_SECRET_KEY=
 
 PROD=false
 
-MONGO_URL=mongodb://jadero:123456@localhost:27017/
+MONGO_URL=
 MONGO_DB_NAME=NOC
-MONGO_USER=jadero
-MONGO_PASS=123456
+MONGO_USER=
+MONGO_PASS=
+
+RABBITMQ_USER=
+RABBITMQ_PASS=
+RABBITMQ_URL=
 ```
 
 3 Install dependencies
@@ -24,13 +28,13 @@ MONGO_PASS=123456
   npm i
 ```
 
-4 Raise BD with
+4 Raise BD if local with 
 
 ```
   docker compose up -d
 ```
 
-5 Generate prisma
+5 Generate prisma if using prisma
 
 ```
   npx prisma migrate dev
