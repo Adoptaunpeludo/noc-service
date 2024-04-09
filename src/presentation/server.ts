@@ -24,6 +24,7 @@ export class Server {
   public static async start() {
     console.log('Server started...');
 
+    // Schedule cron job to check service status
     CronService.createJob('1 * * * *', () => {
       const url = 'https://www.adoptaunpeludo.com';
       new CheckServiceMultiple(
@@ -34,6 +35,7 @@ export class Server {
       ).execute(url);
     });
 
+    // Initialize error notification service
     const errorNotificationService = new ConsumerService(
       emailService,
       envs.RABBITMQ_URL,
@@ -41,6 +43,7 @@ export class Server {
       [fileSystemLogRepository, mongoLogRepository]
     );
 
+    // Start consuming messages for error notification
     await errorNotificationService.consume();
     // const logs = await logRepository.getLogs(LogSeverityLevel.high);
     // console.log(logs);
