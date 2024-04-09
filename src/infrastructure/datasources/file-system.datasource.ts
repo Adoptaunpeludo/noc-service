@@ -2,6 +2,9 @@ import { LogDatasource } from '../../domain/datasources/log.datasource';
 import { LogEntity, LogSeverityLevel } from '../../domain/entities/log.entity';
 import fs from 'fs';
 
+/**
+ * Data source class for managing logs stored in the file system.
+ */
 export class FileSystemDatasource implements LogDatasource {
   private readonly logPath = 'logs/';
   private readonly allLogsPath = 'logs/logs-all.log';
@@ -12,6 +15,9 @@ export class FileSystemDatasource implements LogDatasource {
     this.createLogsFiles();
   }
 
+  /**
+   * Creates log files if they do not exist.
+   */
   private createLogsFiles = () => {
     if (!fs.existsSync(this.logPath)) {
       fs.mkdirSync(this.logPath);
@@ -25,6 +31,10 @@ export class FileSystemDatasource implements LogDatasource {
     );
   };
 
+  /**
+   * Saves a log entity to the appropriate log file based on severity level.
+   * @param log The log entity to save.
+   */
   async saveLog(log: LogEntity): Promise<void> {
     const logAsJson = `${JSON.stringify(log)}\n`;
 
@@ -37,6 +47,11 @@ export class FileSystemDatasource implements LogDatasource {
       fs.appendFileSync(this.highLogsPath, logAsJson);
   }
 
+  /**
+   * Retrieves logs of the specified severity level from the appropriate log file.
+   * @param severityLevel The severity level of the logs to retrieve.
+   * @returns An array of log entities.
+   */
   private getLogsFromFile = (path: string): LogEntity[] => {
     const content = fs.readFileSync(path, 'utf8');
 
@@ -48,6 +63,11 @@ export class FileSystemDatasource implements LogDatasource {
     return logs;
   };
 
+  /**
+   * Gets logs of the specified severity level.
+   * @param severityLevel The severity level of the logs to retrieve.
+   * @returns An array of log entities.
+   */
   async getLogs(severityLevel: LogSeverityLevel): Promise<LogEntity[]> {
     switch (severityLevel) {
       case LogSeverityLevel.low:

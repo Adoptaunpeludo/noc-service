@@ -4,9 +4,20 @@ import { EmailService } from '../email/email.service';
 import { LogRepository } from '../../domain/repository/log.repository';
 import { LogEntity } from '../../domain/entities/log.entity';
 
+/**
+ * Class representing a consumer service for processing messages from a RabbitMQ queue.
+ */
 export class ConsumerService {
   private channelWrapper: ChannelWrapper | undefined = undefined;
   private EXCHANGE: string;
+
+  /**
+   * Creates an instance of ConsumerService.
+   * @param {EmailService} emailService - The email service used for sending notifications.
+   * @param {string} rabbitmqUrl - The URL of the RabbitMQ server.
+   * @param {string} queue - The name of the queue to consume messages from.
+   * @param {LogRepository[]} logRepository - An array of log repositories for saving log entities.
+   */
   constructor(
     private emailService: EmailService,
     private readonly rabbitmqUrl: string,
@@ -22,10 +33,17 @@ export class ConsumerService {
     }
   }
 
+  /**
+   * Calls the saveLog method for each log repository.
+   * @param log The log entity to be saved.
+   */
   private callLogs(log: LogEntity) {
     this.logRepository.forEach((repository) => repository.saveLog(log));
   }
 
+  /**
+   * Consumes messages from the queue and processes them.
+   */
   public async consume() {
     try {
       await this.channelWrapper!.addSetup(async (channel: ConfirmChannel) => {

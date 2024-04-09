@@ -15,6 +15,9 @@ export interface Attachment {
   path: string;
 }
 
+/**
+ * Service class for sending emails.
+ */
 export class EmailService {
   private transporter = nodemailer.createTransport({
     service: envs.MAILER_SERVICE,
@@ -26,6 +29,11 @@ export class EmailService {
 
   constructor() {}
 
+  /**
+   * Sends an email with the provided options.
+   * @param options The options for sending the email.
+   * @returns A promise that resolves to a boolean indicating if the email was sent successfully.
+   */
   async sendEmail(options: SendMailOptions): Promise<boolean> {
     const { to, subject, htmlBody, attachments = [] } = options;
 
@@ -44,6 +52,11 @@ export class EmailService {
     }
   }
 
+  /**
+   * Sends an email with system logs attached as files.
+   * @param to The recipient(s) of the email.
+   * @returns A promise that resolves to a boolean indicating if the email was sent successfully.
+   */
   sendEmailWithFileSystemLogs(to: string | string[]) {
     const subject = 'Server Logs';
     const htmlBody = `
