@@ -2,16 +2,37 @@ import { EmailService } from '../../../presentation/email/email.service';
 import { LogEntity, LogSeverityLevel } from '../../entities/log.entity';
 import { LogRepository } from '../../repository/log.repository';
 
+/**
+ * Interface for the use case of sending log emails.
+ */
 interface SendLogEmailUseCase {
+  /**
+   * Executes the sending of log emails.
+   * @param to The email address or addresses to send the log emails to.
+   * @returns A promise that resolves to true if the log emails are sent successfully, otherwise false.
+   */
   execute: (to: string | string[]) => Promise<boolean>;
 }
 
+/**
+ * Class representing the use case of sending log emails.
+ */
 export class SendEmailLogs implements SendLogEmailUseCase {
+  /**
+   * Creates an instance of SendEmailLogs.
+   * @param emailService The email service used to send log emails.
+   * @param logRepository The repository for saving logs.
+   */
   constructor(
     private readonly emailService: EmailService,
     private readonly logRepository: LogRepository
   ) {}
 
+  /**
+   * Executes the sending of log emails.
+   * @param to The email address or addresses to send the log emails to.
+   * @returns A promise that resolves to true if the log emails are sent successfully, otherwise false.
+   */
   async execute(to: string | string[]) {
     try {
       const sent = await this.emailService.sendEmailWithFileSystemLogs(to);
