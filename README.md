@@ -1,47 +1,33 @@
-# dev
+# Servicio de Gestión de Notificaciones de Error
 
-1. Clone file env.template to .env
-2. Config environment variables
+## Descripción
+Este servicio es parte de una aplicación para monitorear el estado de otros servicios y notificar errores a través de correo electrónico. Está desarrollado utilizando TypeScript y Node.js, y emplea una arquitectura basada en el patrón de diseño de repositorio.
 
-```
-PORT=3000
+## Funcionalidades
+- Programa trabajos cron para verificar el estado de los servicios.
+- Envía notificaciones por correo electrónico en caso de errores.
+- Consume mensajes de una cola de RabbitMQ para recibir notificaciones de errores.
+- Guarda registros de errores en diferentes tipos de almacenes de datos, como sistemas de archivos y bases de datos MongoDB y PostgreSQL.
 
-MAILER_SERVICE=
-MAILER_EMAIL=
-MAILER_SECRET_KEY=
+## Dependencias
+- `amqp-connection-manager`: Para gestionar la conexión con RabbitMQ.
+- `amqplib`: Cliente AMQP para Node.js.
+- `cron`: Librería para programar trabajos cron en Node.js.
+- `dotenv`: Para cargar variables de entorno desde archivos .env.
+- `env-var`: Para validar y acceder a variables de entorno de forma segura.
+- `mongoose`: Biblioteca de modelado de objetos MongoDB para Node.js.
+- `nodemailer`: Módulo para enviar correos electrónicos desde Node.js.
 
-PROD=false
+## Tecnologías
+- TypeScript
+- Node.js
+- MongoDB
+- PostgreSQL
+- RabbitMQ
 
-MONGO_URL=
-MONGO_DB_NAME=NOC
-MONGO_USER=
-MONGO_PASS=
-
-RABBITMQ_USER=
-RABBITMQ_PASS=
-RABBITMQ_URL=
-```
-
-3 Install dependencies
-
-```
-  npm i
-```
-
-4 Raise BD if local with 
-
-```
-  docker compose up -d
-```
-
-5 Generate prisma if using prisma
-
-```
-  npx prisma migrate dev
-```
-
-6 Run in development mode
-
-```
-  npm run dev
-```
+## Instalación
+1. Clona este repositorio en tu máquina local.
+2. Instala las dependencias utilizando el comando `npm install`.
+3. Crea un archivo `.env` basado en el archivo `.env.template` proporcionado y configura las variables de entorno según tus necesidades.
+4. Ejecuta el servicio utilizando el comando `npm start`.
+5. Recuerda tener configuradas las conexiones a los servicios externos, como RabbitMQ y las bases de datos MongoDB y PostgreSQL, en los archivos de configuración correspondientes.
